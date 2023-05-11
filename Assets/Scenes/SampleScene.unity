@@ -65206,6 +65206,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1410683993 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5799469502635363590, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
+  m_PrefabInstance: {fileID: 5799469503278311908}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1873663106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1873663107}
+  - component: {fileID: 1873663108}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1873663107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873663106}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1410683993}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1873663108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873663106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04297bca247a65d41bbe87f37ee67f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 7387709523885330070, guid: abe04d7069d01d44e9c75c0a1c3d2b05, type: 3}
+  radius: 15
 --- !u!1001 &5799469503278311908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65213,14 +65264,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5799469502635363589, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5799469502635363589, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1394394905
-      objectReference: {fileID: 0}
     - target: {fileID: 5799469502635363590, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
       propertyPath: m_RootOrder
       value: 1
