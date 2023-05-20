@@ -260,7 +260,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6bc579d11f8ed5a478c98bd652b1227f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -65213,6 +65213,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1511028169, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 5152238726838410820, guid: 65d80c9f9d2f8c248ad45a8a3138512d, type: 3}
+    - target: {fileID: 1873663108, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
+      propertyPath: maxEnemiesSpawn
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5799469502635363590, guid: ae76fb63cd6c94f4b94ee80734bf6a6c, type: 3}
       propertyPath: m_RootOrder
       value: 1

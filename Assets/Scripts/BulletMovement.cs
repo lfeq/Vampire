@@ -12,6 +12,7 @@ public class BulletMovement : MonoBehaviour
     private void Start()
     {
         formulas = new Formulas();
+        Destroy(gameObject, 10f);
     }
 
     private void Update()

@@ -6,7 +6,7 @@ public class EnemyMovement : MonoBehaviour
 {
     private Transform player;
     private Formulas formulas;
-
+    
     [SerializeField] private float speed = 1f;
 
     void Start() {
@@ -15,7 +15,16 @@ public class EnemyMovement : MonoBehaviour
     }
 
     void Update() {
-        Vector3 direction = formulas.Direction(player.position, transform.position);
+        Vector3 direction = formulas.Direction(transform.position, player.position);
         transform.position += direction * speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet"))
+        {
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

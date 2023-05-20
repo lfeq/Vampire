@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04297bca247a65d41bbe87f37ee67f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7387709523885330070, guid: abe04d7069d01d44e9c75c0a1c3d2b05, type: 3}
+  enemyPrefab: {fileID: 2730542594176502973, guid: 70d8472062367a64ebaf6a930402f5a4, type: 3}
   radius: 15
 --- !u!1 &5799469502635363643
 GameObject:
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 1511028169}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

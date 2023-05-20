@@ -7,15 +7,15 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float radius = 5f;
+    [SerializeField] private int maxEnemiesSpawn = 10;
+    [SerializeField] private float spawnCooldown = 3f;
 
     private float angle;
 
     private void Start()
     {
-        angle = Random.Range(0f, 360f);
-
-        for (int i = 0; i < 10; i++)
-            SpawnEnemy();
+        ResetAngle();
+        StartCoroutine(SpawnEnemiesCooldown());
     }
 
     /// <summary>
@@ -29,6 +29,27 @@ public class EnemySpawner : MonoBehaviour
         angle = Random.Range(angle - angleGap, angle + angleGap);
         Vector3 pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
         Instantiate(enemyPrefab, center + pos, Quaternion.identity);
+    }
+
+    private void ResetAngle()
+    {
+        angle = Random.Range(0f, 360f);
+        StartCoroutine(ResetAngleCooldown());
+    }
+
+    IEnumerator ResetAngleCooldown()
+    {
+        yield return new WaitForSeconds(10);
+        ResetAngle();
+    }
+
+    IEnumerator SpawnEnemiesCooldown()
+    {
+        yield return new WaitForSeconds(spawnCooldown);
+        for(int i = 0; i < maxEnemiesSpawn; i++)
+            SpawnEnemy();
+        maxEnemiesSpawn++;
+        StartCoroutine(SpawnEnemiesCooldown());
     }
 
     void OnDrawGizmosSelected()
