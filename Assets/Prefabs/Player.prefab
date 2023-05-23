@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2730542594176502973, guid: 70d8472062367a64ebaf6a930402f5a4, type: 3}
-  radius: 15
+  radius: 26.3
+  maxEnemiesSpawn: 5
+  spawnCooldown: 3
 --- !u!1 &5799469502635363643
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,9 +58,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5799469502635363590}
   - component: {fileID: 5799469502635363589}
+  - component: {fileID: 218974809903709486}
+  - component: {fileID: 8401722753357294840}
   - component: {fileID: 5799469502635363588}
   - component: {fileID: 5799469502635363591}
   - component: {fileID: 1511028169}
+  - component: {fileID: 1377298313}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -134,6 +139,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &218974809903709486
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799469502635363643}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!70 &8401722753357294840
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799469502635363643}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.9375, y: 1.3125}
+  m_Direction: 0
 --- !u!95 &5799469502635363588
 Animator:
   serializedVersion: 5
@@ -181,5 +223,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72c1abd8f17174468a86526f1aaf00e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 4549086089464691043, guid: 65d80c9f9d2f8c248ad45a8a3138512d, type: 3}
+  bullet: {fileID: 5152238726838410820, guid: 65d80c9f9d2f8c248ad45a8a3138512d, type: 3}
   cooldown: 1
+--- !u!114 &1377298313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5799469502635363643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 830a9a023a266da49a0eaa271e63252b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevel:
+    useConstant: 0
+    variable: {fileID: 11400000, guid: b248606ba8139454ead72e2c5651dc9f, type: 2}
+    constantValue: 0
+  currentXP:
+    useConstant: 0
+    variable: {fileID: 11400000, guid: 5ac4f3973016e074da23850a3f45e0a4, type: 2}
+    constantValue: 0
+  requiredXPForNextLevel:
+    useConstant: 0
+    variable: {fileID: 11400000, guid: 86ad04096e15d6e4ea1e18c017776599, type: 2}
+    constantValue: 10
+  requiredXPForNextLevelMultiplyer:
+    useConstant: 1
+    variable: {fileID: 0}
+    constantValue: 1.5
+  onXpPickup: {fileID: 11400000, guid: c96abd3aa77828742980839b3a7bd1af, type: 2}
