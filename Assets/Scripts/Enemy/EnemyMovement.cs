@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     private Formulas formulas;
     
     [SerializeField] private float speed = 1f;
+    [SerializeField] private float damage = 1f;
 
     void Start() {
         player = GameObject.FindWithTag("Player").transform;
@@ -16,15 +17,14 @@ public class EnemyMovement : MonoBehaviour
 
     void Update() {
         Vector3 direction = formulas.Direction(transform.position, player.position);
+        direction = formulas.Normalizar(direction);
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Bullet"))
-    //    {
-    //        Destroy(collision.gameObject);
-    //        Destroy(gameObject);
-    //    }
-    //}
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("Player")) {
+            TakeDamage takeDamage = collision.GetComponent<TakeDamage>();
+            takeDamage.takeDamage(damage);
+        }
+    }
 }

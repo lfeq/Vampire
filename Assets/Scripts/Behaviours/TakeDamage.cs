@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class TakeDamage : MonoBehaviour
 {
+    [SerializeField] private GameEvent ontakeDamage;
+
     private bool hasHealth;
     private Health health;
 
@@ -13,14 +15,12 @@ public class TakeDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health= GetComponent<Health>();
-        if(health == null)
-            hasHealth = false;
-        hasHealth = true;
+        health = GetComponent<Health>();
+        hasHealth = health != null;
     }
 
     
-    public void takeDamage(int damage)
+    public void takeDamage(float damage)
     {
         if(hasHealth)
             health.ReduceHealth(damage);

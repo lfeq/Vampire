@@ -10,12 +10,25 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int maxEnemiesSpawn = 10;
     [SerializeField] private float spawnCooldown = 3f;
 
+    private float nextSpawnTime;
+    private float nextChangeAngleTime;
     private float angle;
 
     private void Start()
     {
         ResetAngle();
-        StartCoroutine(SpawnEnemiesCooldown());
+        SpawnEnemies();
+    }
+
+    private void Update() {
+        nextSpawnTime -= Time.deltaTime;
+        nextChangeAngleTime -= Time.deltaTime;
+        if(nextSpawnTime <= 0) {
+            SpawnEnemies();
+        }
+        if(nextChangeAngleTime <= 0) {
+            ResetAngle();
+        }
     }
 
     /// <summary>
@@ -34,22 +47,14 @@ public class EnemySpawner : MonoBehaviour
     private void ResetAngle()
     {
         angle = Random.Range(0f, 360f);
-        StartCoroutine(ResetAngleCooldown());
+        nextChangeAngleTime = 10f;
     }
 
-    IEnumerator ResetAngleCooldown()
-    {
-        yield return new WaitForSeconds(10);
-        ResetAngle();
-    }
-
-    IEnumerator SpawnEnemiesCooldown()
-    {
-        yield return new WaitForSeconds(spawnCooldown);
-        for(int i = 0; i < maxEnemiesSpawn; i++)
+    private void SpawnEnemies() {
+        for (int i = 0; i < maxEnemiesSpawn; i++) {
             SpawnEnemy();
-        maxEnemiesSpawn++;
-        StartCoroutine(SpawnEnemiesCooldown());
+        }
+        nextSpawnTime = spawnCooldown;
     }
 
     void OnDrawGizmosSelected()

@@ -6,20 +6,28 @@ using UnityEngine;
 [RequireComponent(typeof(DestroyManager))]
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
+    [SerializeField] private bool createHealth = false;
+    [SerializeField] private FloatVariable health;
+    [SerializeField] private bool resetHealth;
+    [SerializeField] private FloatReference startingHealth;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        currentHealth = maxHealth;
+        if (createHealth) {
+            health = ScriptableObject.CreateInstance<FloatVariable>();
+        }
+        if (resetHealth) {
+            health.value = startingHealth.value;
+        }
+        print(health.value);
     }
 
-    public void ReduceHealth(int damage)
+    public void ReduceHealth(float damage)
     {
-        currentHealth -= damage;
-
-        if(currentHealth < 0)
+        health.value -= damage;
+        print(health.value);
+        if(health.value < 0)
         {
             die();
         }

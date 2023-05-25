@@ -7,12 +7,21 @@ public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private GameObject bullet;
     [SerializeField] private float cooldown;
+
     private PlayerController playerController;
+    private float nextShootTime;
 
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
-        StartCoroutine(ShootCountdown());
+        Shoot();
+    }
+
+    private void Update() {
+        nextShootTime -= Time.deltaTime;
+        if (nextShootTime <= 0) {
+            Shoot();
+        }
     }
 
     private void Shoot()
@@ -20,7 +29,7 @@ public class PlayerShoot : MonoBehaviour
         GameObject tempBullet = Instantiate(bullet, transform.position, Quaternion.identity);
         BulletMovement tempBulletMovement = tempBullet.GetComponent<BulletMovement>();
         SetBulletDirection(tempBulletMovement);
-        StartCoroutine(ShootCountdown());
+        nextShootTime = cooldown;
     }
 
     private void SetBulletDirection(BulletMovement bulletMovement)
@@ -40,11 +49,5 @@ public class PlayerShoot : MonoBehaviour
                 bulletMovement.SetDirection(new Vector2(-1, 0));
                 break;
         }
-    }
-
-    IEnumerator ShootCountdown()
-    {
-        yield return new WaitForSeconds(cooldown);
-        Shoot();
     }
 }

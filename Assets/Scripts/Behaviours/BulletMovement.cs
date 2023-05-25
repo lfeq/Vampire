@@ -28,6 +28,11 @@ public class BulletMovement : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        collision.GetComponent<TakeDamage>()?.takeDamage(damage);
+        if (collision.CompareTag("Enemy"))
+        {
+            print("Hola");
+            collision.GetComponent<TakeDamage>()?.takeDamage(damage);
+            Destroy(gameObject);
+        }
     }
 }
