@@ -4,37 +4,45 @@ using UnityEngine;
 
 [RequireComponent(typeof(TakeDamage))]
 [RequireComponent(typeof(DestroyManager))]
-public class Health : MonoBehaviour
-{
+public class Health : MonoBehaviour {
     [SerializeField] private bool createHealth = false;
     [SerializeField] private FloatVariable health;
     [SerializeField] private bool resetHealth;
     [SerializeField] private FloatReference startingHealth;
+    [SerializeField] private FloatReference maxHealth;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
+    void Awake() {
         if (createHealth) {
             health = ScriptableObject.CreateInstance<FloatVariable>();
         }
         if (resetHealth) {
             health.value = startingHealth.value;
         }
-        print(health.value);
+        if(maxHealth != null) {
+            maxHealth.value = startingHealth.value;
+        }
     }
 
-    public void ReduceHealth(float damage)
-    {
+    public void ReduceHealth(float damage) {
         health.value -= damage;
-        print(health.value);
-        if(health.value < 0)
-        {
+        if (health.value < 0) {
             die();
         }
     }
 
-    private void die()
-    {
+    public void AddMaxHealth(float health) {
+        maxHealth.value += health;
+    }
+
+    public FloatReference GetMaxHealth() {
+        return maxHealth;
+    }
+
+    public void SetMaxHealth(float newValue) {
+        maxHealth.value = newValue;
+    }
+
+    private void die() {
         Destroy(gameObject);
     }
 }

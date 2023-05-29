@@ -10,6 +10,7 @@ public class ExperienceManager : MonoBehaviour
     [SerializeField] private FloatReference requiredXPForNextLevel;
     [SerializeField] private FloatReference requiredXPForNextLevelMultiplyer;
     [SerializeField] private GameEvent onXpPickup;
+    [SerializeField] private GameEvent onLevelUp;
 
     private void Start() {
         currentLevel.value = 1;
@@ -28,6 +29,7 @@ public class ExperienceManager : MonoBehaviour
         currentLevel.value++;
         currentXP.value = 0;
         requiredXPForNextLevel.value *= requiredXPForNextLevelMultiplyer.value;
+        onLevelUp.Raise();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

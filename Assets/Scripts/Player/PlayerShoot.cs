@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class PlayerShoot : MonoBehaviour
-{
+public class PlayerShoot : PlayerBaseAttack {
     [SerializeField] private GameObject bullet;
     [SerializeField] private float cooldown;
 

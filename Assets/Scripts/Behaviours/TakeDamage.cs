@@ -5,8 +5,6 @@ using UnityEngine.Events;
 
 public class TakeDamage : MonoBehaviour
 {
-    [SerializeField] private GameEvent ontakeDamage;
-
     private bool hasHealth;
     private Health health;
 
