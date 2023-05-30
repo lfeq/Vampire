@@ -159,6 +159,7 @@ MonoBehaviour:
   spawnPositionOffset: 1.5
   rotationDirection: {x: 0, y: 0, z: 1}
   angle: 0.2
+  maxBooks: 2
 --- !u!212 &739247974
 SpriteRenderer:
   m_ObjectHideFlags: 0

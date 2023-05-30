@@ -10,9 +10,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int maxEnemiesSpawn = 10;
     [SerializeField] private float spawnCooldown = 3f;
 
-    private float nextSpawnTime;
-    private float nextChangeAngleTime;
-    private float angle;
+    private float m_nextSpawnTime;
+    private float m_nextChangeAngleTime;
+    private float m_angle;
 
     private void Start()
     {
@@ -21,12 +21,12 @@ public class EnemySpawner : MonoBehaviour
     }
 
     private void Update() {
-        nextSpawnTime -= Time.deltaTime;
-        nextChangeAngleTime -= Time.deltaTime;
-        if(nextSpawnTime <= 0) {
+        m_nextSpawnTime -= Time.deltaTime;
+        m_nextChangeAngleTime -= Time.deltaTime;
+        if(m_nextSpawnTime <= 0) {
             SpawnEnemies();
         }
-        if(nextChangeAngleTime <= 0) {
+        if(m_nextChangeAngleTime <= 0) {
             ResetAngle();
         }
     }
@@ -36,25 +36,25 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private void SpawnEnemy()
     {
-        angle = angle * Mathf.Deg2Rad;
+        m_angle = m_angle * Mathf.Deg2Rad;
         float angleGap = 5 * Mathf.Deg2Rad;
         Vector3 center = transform.position;
-        angle = Random.Range(angle - angleGap, angle + angleGap);
-        Vector3 pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
+        m_angle = Random.Range(m_angle - angleGap, m_angle + angleGap);
+        Vector3 pos = new Vector3(Mathf.Cos(m_angle), Mathf.Sin(m_angle), 0) * radius;
         Instantiate(enemyPrefab, center + pos, Quaternion.identity);
     }
 
     private void ResetAngle()
     {
-        angle = Random.Range(0f, 360f);
-        nextChangeAngleTime = 10f;
+        m_angle = Random.Range(0f, 360f);
+        m_nextChangeAngleTime = 10f;
     }
 
     private void SpawnEnemies() {
         for (int i = 0; i < maxEnemiesSpawn; i++) {
             SpawnEnemy();
         }
-        nextSpawnTime = spawnCooldown;
+        m_nextSpawnTime = spawnCooldown;
     }
 
     void OnDrawGizmosSelected()

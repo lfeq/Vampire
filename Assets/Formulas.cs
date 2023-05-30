@@ -22,6 +22,21 @@ public class Formulas {
         return x * x;
     }
 
+    /// <summary>
+    /// Rotate object x degrees
+    /// </summary>
+    /// <param name="previousPosition"></param>
+    /// <param name="Degrees to be rotated in radians"></param>
+    /// <returns>new position</returns>
+    public Vector3 Rotate(Vector3 previousPosition, float addAngle) {
+        //x’ = x cos(θ) - y sin(θ)
+        //y’ = x sin(θ) + y cos(θ)
+        //Donde X y Y son la posicion original.
+        float xPos = (previousPosition.x * Mathf.Cos(addAngle)) - (previousPosition.y * Mathf.Sin(addAngle));
+        float yPos = (previousPosition.x * Mathf.Sin(addAngle)) + (previousPosition.y * Mathf.Cos(addAngle));
+        return new Vector3(xPos, yPos, 0);
+    }
+
     public Vector3 Quaternion(Vector4 q, Vector3 pos) {
         float angle = q.w * Mathf.Deg2Rad;
         float w = Mathf.Cos(angle / 2);
@@ -55,7 +70,7 @@ public class Formulas {
     /// Calculates the rotation of a point around a center.
     /// <example>
     /// <code>
-    /// <para/>// Rotates in x axis 45 degrees.
+    /// <para/>Rotates in x axis 45 degrees.
     /// <para/>transform.position = formulas.Quaternion(new Vector3(1, 0, 0), 45, transform.position, center.position);
     /// <para/>MethodExample(a);
     /// </code>

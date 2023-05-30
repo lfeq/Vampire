@@ -10,13 +10,13 @@ public class PlayerBookDefense : PlayerBaseAttack {
     [SerializeField] private float spawnPositionOffset = 1.5f;
     [SerializeField] private Vector3 rotationDirection;
     [SerializeField] private float angle = 1f;
+    [SerializeField] private int maxBooks = 1;
 
-    private int maxBooks = 1;
-    private float nextSpawnTime;
-    private Formulas formulas;
+    private float m_nextSpawnTime;
+    private Formulas m_formulas;
 
     private void Start() {
-        formulas = new Formulas();
+        m_formulas = new Formulas();
         SpawnBook();
     }
 
@@ -27,14 +27,13 @@ public class PlayerBookDefense : PlayerBaseAttack {
 
     private void RotateBooks() {
         foreach (Transform book in books) {
-            print("Hola");
-            book.position = formulas.Quaternion(rotationDirection, angle, book.position, transform.position);
+            book.position = m_formulas.Quaternion(rotationDirection, angle, book.position, transform.position);
         }
     }
 
     private void Cooldown() {
-        nextSpawnTime -= Time.deltaTime;
-        if (nextSpawnTime <= 0) {
+        m_nextSpawnTime -= Time.deltaTime;
+        if (m_nextSpawnTime <= 0) {
             SpawnBook();
         }
     }
@@ -47,6 +46,15 @@ public class PlayerBookDefense : PlayerBaseAttack {
         GameObject tempBook = Instantiate(bookPrefab, spawnPosition, Quaternion.identity);
         tempBook.transform.parent = transform;
         books.Add(tempBook.transform);
-        nextSpawnTime = spawnBookCooldown;
+        m_nextSpawnTime = spawnBookCooldown;
+
+        float separation = 360 / books.Count;
+        separation *= Mathf.Deg2Rad;
+        Vector2 previousPosition = books[0].position;
+        for (int i = 1; i < books.Count; i++) {
+            Transform book = books[i];
+            book.position = m_formulas.Rotate(previousPosition, separation);
+            previousPosition = book.position;
+        }
     }
 }
