@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
-{
+public class EnemySpawner : MonoBehaviour {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float radius = 5f;
     [SerializeField] private int maxEnemiesSpawn = 10;
@@ -14,8 +11,7 @@ public class EnemySpawner : MonoBehaviour
     private float m_nextChangeAngleTime;
     private float m_angle;
 
-    private void Start()
-    {
+    private void Start() {
         ResetAngle();
         SpawnEnemies();
     }
@@ -23,10 +19,10 @@ public class EnemySpawner : MonoBehaviour
     private void Update() {
         m_nextSpawnTime -= Time.deltaTime;
         m_nextChangeAngleTime -= Time.deltaTime;
-        if(m_nextSpawnTime <= 0) {
+        if (m_nextSpawnTime <= 0) {
             SpawnEnemies();
         }
-        if(m_nextChangeAngleTime <= 0) {
+        if (m_nextChangeAngleTime <= 0) {
             ResetAngle();
         }
     }
@@ -34,8 +30,7 @@ public class EnemySpawner : MonoBehaviour
     /// <summary>
     /// Instantiate an enemy in a random position around the player
     /// </summary>
-    private void SpawnEnemy()
-    {
+    private void SpawnEnemy() {
         m_angle = m_angle * Mathf.Deg2Rad;
         float angleGap = 5 * Mathf.Deg2Rad;
         Vector3 center = transform.position;
@@ -44,8 +39,7 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(enemyPrefab, center + pos, Quaternion.identity);
     }
 
-    private void ResetAngle()
-    {
+    private void ResetAngle() {
         m_angle = Random.Range(0f, 360f);
         m_nextChangeAngleTime = 10f;
     }
@@ -57,8 +51,7 @@ public class EnemySpawner : MonoBehaviour
         m_nextSpawnTime = spawnCooldown;
     }
 
-    void OnDrawGizmosSelected()
-    {
+    private void OnDrawGizmosSelected() {
         Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
     }

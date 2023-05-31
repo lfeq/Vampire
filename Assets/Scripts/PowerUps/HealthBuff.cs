@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="PowerUp/HealthBuff")]
-public class HealthBuff : PowerUpEffects
-{
+[CreateAssetMenu(menuName = "PowerUp/HealthBuff")]
+public class HealthBuff : PowerUpEffects {
+
     [Range(0.1f, 100f)]
     public float percent;
 

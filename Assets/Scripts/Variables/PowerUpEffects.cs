@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public abstract class PowerUpEffects : ScriptableObject
-{
+public abstract class PowerUpEffects : ScriptableObject {
     public int currentLevel;
 
     private void OnEnable() {
