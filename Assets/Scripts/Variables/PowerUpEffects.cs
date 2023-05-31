@@ -7,5 +7,5 @@ public abstract class PowerUpEffects : ScriptableObject {
         currentLevel = 0;
     }
 
-    public abstract void Apply(GameObject target);
+    public abstract void apply(GameObject t_target);
 }

@@ -1,49 +1,83 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 public class PlayerShoot : PlayerBaseAttack {
+    public int currentLevel = 1;
+    
     [SerializeField] private GameObject bullet;
     [SerializeField] private float cooldown;
 
-    private PlayerController playerController;
-    private float nextShootTime;
+    private PlayerController m_playerController;
+    private float m_nextShootTime;
 
     private void Start() {
-        playerController = GetComponent<PlayerController>();
-        Shoot();
+        m_playerController = GetComponent<PlayerController>();
     }
 
     private void Update() {
-        nextShootTime -= Time.deltaTime;
-        if (nextShootTime <= 0) {
-            Shoot();
+        m_nextShootTime -= Time.deltaTime;
+        if (m_nextShootTime <= 0) {
+            shoot();
         }
     }
 
-    private void Shoot() {
-        GameObject tempBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-        BulletMovement tempBulletMovement = tempBullet.GetComponent<BulletMovement>();
-        SetBulletDirection(tempBulletMovement);
-        nextShootTime = cooldown;
+    private void shoot() {
+        switch (currentLevel) {
+            case 1:
+                shootLevel1();
+                break;
+            case 2:
+                shootLevel2();
+                break;
+            default:
+                shootLevel3();
+                break;
+        }
+        m_nextShootTime = cooldown;
     }
 
-    private void SetBulletDirection(BulletMovement bulletMovement) {
-        switch (playerController.playerDirection) {
+
+    private void shootLevel1() {
+        shootBullet(m_playerController.playerDirection);
+    }
+
+    private void shootBullet(PlayerDirection t_playerDirection) {
+        GameObject tempBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        BulletMovement tempBulletMovement = tempBullet.GetComponent<BulletMovement>();
+        tempBulletMovement.setDirection(t_playerDirection);
+    }
+
+    private void shootLevel2() {
+        switch (m_playerController.playerDirection) {
             case PlayerDirection.North:
-                bulletMovement.SetDirection(new Vector2(0, 1));
+                shootBullet(PlayerDirection.North);
+                shootBullet(PlayerDirection.South);
                 break;
 
             case PlayerDirection.South:
-                bulletMovement.SetDirection(new Vector2(0, -1));
+                shootBullet(PlayerDirection.North);
+                shootBullet(PlayerDirection.South);
                 break;
 
             case PlayerDirection.East:
-                bulletMovement.SetDirection(new Vector2(1, 0));
+                shootBullet(PlayerDirection.East);
+                shootBullet(PlayerDirection.West);
                 break;
 
             case PlayerDirection.West:
-                bulletMovement.SetDirection(new Vector2(-1, 0));
+                shootBullet(PlayerDirection.East);
+                shootBullet(PlayerDirection.West);
                 break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+    }
+    
+    private void shootLevel3() {
+        shootBullet(PlayerDirection.East);
+        shootBullet(PlayerDirection.West);
+        shootBullet(PlayerDirection.North);
+        shootBullet(PlayerDirection.South);
     }
 }

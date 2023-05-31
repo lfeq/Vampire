@@ -315,6 +315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1873663107}
   - component: {fileID: 1873663108}
+  - component: {fileID: 1829024847}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -353,6 +354,38 @@ MonoBehaviour:
   radius: 26.3
   maxEnemiesSpawn: 5
   spawnCooldown: 10
+  maxEnemiesMultipliyer:
+    useConstant: 1
+    variable: {fileID: 11400000, guid: 88e1b2881712edf419d725ff797372bc, type: 2}
+    constantValue: 2
+--- !u!114 &1829024847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873663106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4c416fe847e3ad44a813e7a094fac52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 94dcac4108a92f743b8f903985339932, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1873663108}
+        m_TargetAssemblyTypeName: EnemySpawner, Assembly-CSharp
+        m_MethodName: setNewMaxEnemiesAmount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5799469502635363643
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,8 +565,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f72c1abd8f17174468a86526f1aaf00e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevel: 1
   bullet: {fileID: 5152238726838410820, guid: 65d80c9f9d2f8c248ad45a8a3138512d, type: 3}
-  cooldown: 1
+  cooldown: 0.8
 --- !u!114 &1377298313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,12 +591,13 @@ MonoBehaviour:
   requiredXPForNextLevel:
     useConstant: 0
     variable: {fileID: 11400000, guid: 86ad04096e15d6e4ea1e18c017776599, type: 2}
-    constantValue: 10
+    constantValue: 0
   requiredXPForNextLevelMultiplyer:
     useConstant: 1
-    variable: {fileID: 0}
+    variable: {fileID: 11400000, guid: 86ad04096e15d6e4ea1e18c017776599, type: 2}
     constantValue: 1.5
   onXpPickup: {fileID: 11400000, guid: c96abd3aa77828742980839b3a7bd1af, type: 2}
+  onLevelUp: {fileID: 11400000, guid: 94dcac4108a92f743b8f903985339932, type: 2}
 --- !u!114 &1551418633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,6 +614,10 @@ MonoBehaviour:
   health: {fileID: 11400000, guid: aff7c1a831888404ca7b36de04833717, type: 2}
   resetHealth: 1
   startingHealth:
+    useConstant: 1
+    variable: {fileID: 11400000, guid: 8d83e6e0835a7734da7d04b9e3773842, type: 2}
+    constantValue: 100
+  maxHealth:
     useConstant: 0
     variable: {fileID: 11400000, guid: 8d83e6e0835a7734da7d04b9e3773842, type: 2}
     constantValue: 0
@@ -610,7 +649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415342d88ec352442853925e469fce5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ontakeDamage: {fileID: 11400000, guid: 7b0d331b7176bce488d8b79fa85cd0ba, type: 2}
   onTakeDamage:
     m_PersistentCalls:
       m_Calls:

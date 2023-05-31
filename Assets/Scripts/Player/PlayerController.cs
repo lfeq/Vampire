@@ -5,49 +5,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
-
-    private Formulas formulas;
+    public float movementSpeed = 5f;
     public PlayerDirection playerDirection;
 
+    private Formulas m_formulas;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        formulas = new Formulas();
+        m_formulas = new Formulas();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float xMovement = Input.GetAxisRaw("Horizontal") * Time.deltaTime * movementSpeed;
         float yMovement = Input.GetAxisRaw("Vertical") * Time.deltaTime * movementSpeed;
         Vector3 movementVector = new Vector3(xMovement, yMovement, 0);
-
-        transform.position = formulas.Move(transform.position, movementVector);
-
-        UpdatePlayerDirection(xMovement, yMovement);
+        transform.position = m_formulas.Move(transform.position, movementVector);
+        updatePlayerDirection(xMovement, yMovement);
     }
 
-    private void UpdatePlayerDirection(float xMovement, float yMovement)
+    private void updatePlayerDirection(float t_xMovement, float t_yMovement)
     {
-        if(xMovement < 0)
-        {
-            playerDirection = PlayerDirection.West;
+        switch (t_xMovement) {
+            case < 0:
+                playerDirection = PlayerDirection.West;
+                break;
+            case > 0:
+                playerDirection = PlayerDirection.East;
+                break;
         }
-
-        if(xMovement > 0)
-        {
-            playerDirection = PlayerDirection.East;
-        }
-
-        if(yMovement < 0)
-        {
-            playerDirection = PlayerDirection.South;
-        }
-
-        if(yMovement > 0)
-        {
-            playerDirection = PlayerDirection.North;
+        switch (t_yMovement) {
+            case < 0:
+                playerDirection = PlayerDirection.South;
+                break;
+            case > 0:
+                playerDirection = PlayerDirection.North;
+                break;
         }
     }
 }
