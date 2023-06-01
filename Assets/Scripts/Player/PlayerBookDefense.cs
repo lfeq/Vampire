@@ -25,7 +25,7 @@ public class PlayerBookDefense : PlayerBaseAttack {
 
     private void RotateBooks() {
         foreach (Transform book in books) {
-            book.position = m_formulas.Quaternion(rotationDirection, angle, book.position, transform.position);
+            book.position = m_formulas.quaternion(rotationDirection, angle, book.position, transform.position);
         }
     }
 
@@ -51,7 +51,7 @@ public class PlayerBookDefense : PlayerBaseAttack {
         Vector2 previousPosition = books[0].position;
         for (int i = 1; i < books.Count; i++) {
             Transform book = books[i];
-            book.position = m_formulas.Rotate(previousPosition, separation);
+            book.position = m_formulas.rotate(previousPosition, separation);
             previousPosition = book.position;
         }
     }

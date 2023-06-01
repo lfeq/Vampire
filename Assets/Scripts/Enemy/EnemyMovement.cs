@@ -16,8 +16,8 @@ public class EnemyMovement : MonoBehaviour
     }
 
     void Update() {
-        Vector3 direction = formulas.Direction(transform.position, player.position);
-        direction = formulas.Normalizar(direction);
+        Vector3 direction = formulas.direction(transform.position, player.position);
+        direction = formulas.normalizar(direction);
         transform.position += direction * speed * Time.deltaTime;
     }
 

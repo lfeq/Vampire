@@ -18,7 +18,7 @@ public class BulletMovement : MonoBehaviour
     private void Update()
     {
         Vector3 movementVector = new Vector3(m_direction.x, m_direction.y, 0) * (Time.deltaTime * speed);
-        transform.position = m_formulas.Move(transform.position, movementVector);
+        transform.position = m_formulas.move(transform.position, movementVector);
     }
 
     public void setDirection(PlayerDirection t_direction) {

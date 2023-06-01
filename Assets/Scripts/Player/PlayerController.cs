@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         float xMovement = Input.GetAxisRaw("Horizontal") * Time.deltaTime * movementSpeed;
         float yMovement = Input.GetAxisRaw("Vertical") * Time.deltaTime * movementSpeed;
         Vector3 movementVector = new Vector3(xMovement, yMovement, 0);
-        transform.position = m_formulas.Move(transform.position, movementVector);
+        transform.position = m_formulas.move(transform.position, movementVector);
         updatePlayerDirection(xMovement, yMovement);
     }
 
