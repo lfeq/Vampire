@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class PlayerShoot : PlayerBaseAttack {
     public int currentLevel = 1;
+    public float damage = 10;
     
     [SerializeField] private GameObject bullet;
     [SerializeField] private float cooldown;
@@ -46,6 +47,7 @@ public class PlayerShoot : PlayerBaseAttack {
         GameObject tempBullet = Instantiate(bullet, transform.position, Quaternion.identity);
         BulletMovement tempBulletMovement = tempBullet.GetComponent<BulletMovement>();
         tempBulletMovement.setDirection(t_playerDirection);
+        tempBulletMovement.setDamage((int)damage);
     }
 
     private void shootLevel2() {

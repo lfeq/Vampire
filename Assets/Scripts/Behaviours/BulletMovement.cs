@@ -20,6 +20,12 @@ public class BulletMovement : MonoBehaviour
         Vector3 movementVector = new Vector3(m_direction.x, m_direction.y, 0) * (Time.deltaTime * speed);
         transform.position = m_formulas.move(transform.position, movementVector);
     }
+    
+    private void OnTriggerEnter2D(Collider2D t_collision) {
+        if (!t_collision.CompareTag("Enemy")) return;
+        t_collision.GetComponent<TakeDamage>()?.takeDamage(damage);
+        Destroy(gameObject);
+    }
 
     public void setDirection(PlayerDirection t_direction) {
         switch (t_direction) {
@@ -40,9 +46,7 @@ public class BulletMovement : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D t_collision) {
-        if (!t_collision.CompareTag("Enemy")) return;
-        t_collision.GetComponent<TakeDamage>()?.takeDamage(damage);
-        Destroy(gameObject);
+    public void setDamage(int t_damage) {
+        damage = t_damage;
     }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 597170dfc96112c4cb5c7aeca12ec9ea, type: 3}
+  m_Name: LevelUpShoot
+  m_EditorClassIdentifier: 
+  powerUpName: Level Up Fireball
+  powerUpDescription: Shoots a Fireball
+  powerUpEffect: {fileID: 11400000, guid: 684a919ab74443245875bba528a56162, type: 2}
+  icon: {fileID: 753911535, guid: 0e1e4a031af4b5d48b88349a9e005e13, type: 3}
