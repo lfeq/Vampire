@@ -1,17 +1,21 @@
+using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float radius = 5f;
     [SerializeField] private int maxEnemiesSpawn = 10;
-    [SerializeField] private float spawnCooldown = 3f;
+    [SerializeField] private float spawnCooldown = 5f;
     [SerializeField] private FloatReference maxEnemiesMultipliyer;
-    
+    [SerializeField] private PlayerController playerController;
+
     private float m_nextSpawnTime;
     private float m_nextChangeAngleTime;
     private float m_angle;
-    private float m_angleDelta = 5;
+    private const float ANGLE_DELTA = 5;
 
     private void Start() {
         resetAngle();
@@ -22,8 +26,9 @@ public class EnemySpawner : MonoBehaviour {
         m_nextSpawnTime -= Time.deltaTime;
         m_nextChangeAngleTime -= Time.deltaTime;
         if (m_nextSpawnTime <= 0) {
-            spawnEnemies();
+            StartCoroutine(spawnEnemies());
         }
+
         if (m_nextChangeAngleTime <= 0) {
             resetAngle();
         }
@@ -33,8 +38,8 @@ public class EnemySpawner : MonoBehaviour {
     /// Instantiate an enemy in a random position around the player
     /// </summary>
     private void spawnEnemy() {
-        float maxAngle = m_angle + m_angleDelta;
-        float minAngle = m_angle - m_angleDelta;
+        float maxAngle = m_angle + ANGLE_DELTA;
+        float minAngle = m_angle - ANGLE_DELTA;
         Vector3 center = transform.position;
         m_angle = Random.Range(minAngle, maxAngle);
         float angleInRadian = m_angle * Mathf.Deg2Rad;
@@ -43,15 +48,29 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void resetAngle() {
-        m_angle = Random.Range(0f, 360f);
+        switch (playerController.playerDirection) {
+            case PlayerDirection.East:
+                m_angle = Random.Range(0 - ANGLE_DELTA, 0 + ANGLE_DELTA);
+                break;
+            case PlayerDirection.West:
+                m_angle = Random.Range(180 - ANGLE_DELTA, 180 + ANGLE_DELTA);
+                break;
+            case PlayerDirection.North:
+                m_angle = Random.Range(90 - ANGLE_DELTA, 90 + ANGLE_DELTA);
+                break;
+            case PlayerDirection.South:
+                m_angle = Random.Range(270 - ANGLE_DELTA, 270 + ANGLE_DELTA);
+                break;
+        }
         m_nextChangeAngleTime = 10f;
     }
 
-    private void spawnEnemies() {
+    private IEnumerator spawnEnemies() {
+        m_nextSpawnTime = spawnCooldown;
         for (int i = 0; i < maxEnemiesSpawn; i++) {
             spawnEnemy();
+            yield return new WaitForSeconds(0.6f);
         }
-        m_nextSpawnTime = spawnCooldown;
     }
 
     public void setNewMaxEnemiesAmount() {

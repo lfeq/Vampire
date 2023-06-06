@@ -11,7 +11,7 @@ public class BookBuff : PowerUpEffects {
     public override void apply(GameObject t_target) {
         PlayerBookDefense tempPlayerBookDefense = t_target.GetComponent<PlayerBookDefense>();
         if (tempPlayerBookDefense == null) {
-            t_target.AddComponent<PlayerBookDefense>();
+            tempPlayerBookDefense = t_target.AddComponent<PlayerBookDefense>();
             tempPlayerBookDefense.setBookPrefab(book);
         }
         tempPlayerBookDefense.damage *= damageMultiplier;

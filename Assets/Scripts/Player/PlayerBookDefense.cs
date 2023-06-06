@@ -7,7 +7,7 @@ public class PlayerBookDefense : PlayerBaseAttack {
     private List<Transform> m_books = new List<Transform>();
     private float m_spawnBookCooldown = 2f;
     private int m_maxBooks = 1;
-    private const float SPAWN_POSITION_OFFSET = 1.5f;
+    private const float SPAWN_POSITION_OFFSET = 2f;
     private readonly Vector3 m_rotationDirection = new Vector3(0, 0, 1);
     private const float ANGLE = 0.5f;
     private float m_nextSpawnTime;
@@ -35,6 +35,7 @@ public class PlayerBookDefense : PlayerBaseAttack {
         m_nextSpawnTime -= Time.deltaTime;
         if (m_nextSpawnTime <= 0) {
             spawnBook();
+            m_nextSpawnTime = m_spawnBookCooldown;
         }
     }
 
@@ -45,9 +46,10 @@ public class PlayerBookDefense : PlayerBaseAttack {
 
         Vector2 spawnPosition = new Vector2(transform.position.x + SPAWN_POSITION_OFFSET, transform.position.y);
         GameObject tempBook = Instantiate(m_bookPrefab, spawnPosition, Quaternion.identity);
+        tempBook.GetComponent<BookBehaviour>().setDamage((int)damage);
+        tempBook.GetComponent<BookBehaviour>().setBookDefemse(this);
         tempBook.transform.parent = transform;
         m_books.Add(tempBook.transform);
-        m_nextSpawnTime = m_spawnBookCooldown;
 
         float separation = 360 / m_books.Count;
         separation *= Mathf.Deg2Rad;
@@ -61,5 +63,10 @@ public class PlayerBookDefense : PlayerBaseAttack {
 
     public void setBookPrefab(GameObject t_gameObject) {
         m_bookPrefab = t_gameObject;
+    }
+
+    public void removeBook(Transform t_book)
+    {
+        m_books.Remove(t_book);
     }
 }
