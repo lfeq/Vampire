@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     public PlayerDirection playerDirection;
 
     [SerializeField] private DynamicJoystick dynamicJoystick;
+    [SerializeField] private GameEvent playerDead;
 
     private Formulas m_formulas;
 
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour
     private void Update() {
         keyboardMovement();
         joystickMovement();
+    }
+
+    public void raisePlayerDead() {
+        playerDead.Raise(); 
     }
 
     private void keyboardMovement() {

@@ -15,4 +15,8 @@ public class DestroyManager : MonoBehaviour
     public void SpawnObject() {
         Instantiate(prefab, transform.position, Quaternion.identity);
     }
+
+    public void autoDestroy() {
+        Destroy(gameObject);
+    }
 }

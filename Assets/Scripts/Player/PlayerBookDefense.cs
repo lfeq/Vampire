@@ -47,7 +47,7 @@ public class PlayerBookDefense : PlayerBaseAttack {
         Vector2 spawnPosition = new Vector2(transform.position.x + SPAWN_POSITION_OFFSET, transform.position.y);
         GameObject tempBook = Instantiate(m_bookPrefab, spawnPosition, Quaternion.identity);
         tempBook.GetComponent<BookBehaviour>().setDamage((int)damage);
-        tempBook.GetComponent<BookBehaviour>().setBookDefemse(this);
+        tempBook.GetComponent<BookBehaviour>().setBookDefense(this);
         tempBook.transform.parent = transform;
         m_books.Add(tempBook.transform);
 

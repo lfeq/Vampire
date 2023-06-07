@@ -1,27 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BookBehaviour : MonoBehaviour
-{
-    private int damage;
-    private PlayerBookDefense bookDefense;
+public class BookBehaviour : MonoBehaviour {
+    private int m_maxHits = 3;
+    private int m_damage;
+    private PlayerBookDefense m_bookDefense;
 
-    private void OnTriggerEnter2D(Collider2D t_collision)
-    {
+    private void OnTriggerEnter2D(Collider2D t_collision) {
         if (!t_collision.CompareTag("Enemy")) return;
-        t_collision.GetComponent<TakeDamage>()?.takeDamage(damage);
-        bookDefense.removeBook(transform);
-        Destroy(gameObject);
+        t_collision.GetComponent<TakeDamage>()?.takeDamage(m_damage);
+        m_bookDefense.removeBook(transform);
+        m_maxHits--;
+        if (m_maxHits == 0) {
+            Destroy(gameObject);
+        }
     }
 
-    public void setDamage(int t_damage)
-    {
-        damage = t_damage;
+    public void setDamage(int t_damage) {
+        m_damage = t_damage;
     }
 
-    public void setBookDefemse(PlayerBookDefense t_bookDefense)
-    {
-        bookDefense = t_bookDefense;
+    public void setBookDefense(PlayerBookDefense t_bookDefense) {
+        m_bookDefense = t_bookDefense;
     }
 }
