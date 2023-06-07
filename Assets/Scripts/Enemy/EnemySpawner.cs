@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour {
     [SerializeField] private GameObject enemyPrefab;
@@ -19,7 +16,7 @@ public class EnemySpawner : MonoBehaviour {
 
     private void Start() {
         resetAngle();
-        spawnEnemies();
+        m_nextSpawnTime = spawnCooldown;
     }
 
     private void Update() {
@@ -78,7 +75,7 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private void OnDrawGizmosSelected() {
-        Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

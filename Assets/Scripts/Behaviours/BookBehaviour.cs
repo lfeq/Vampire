@@ -8,10 +8,10 @@ public class BookBehaviour : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D t_collision) {
         if (!t_collision.CompareTag("Enemy")) return;
         t_collision.GetComponent<TakeDamage>()?.takeDamage(m_damage);
-        m_bookDefense.removeBook(transform);
         m_maxHits--;
         if (m_maxHits == 0) {
             Destroy(gameObject);
+            m_bookDefense.removeBook(transform);
         }
     }
 
