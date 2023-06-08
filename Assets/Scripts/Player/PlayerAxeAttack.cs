@@ -4,10 +4,9 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerAxeAttack : MonoBehaviour {
-    private GameObject m_axe;
+    [SerializeField] private GameObject m_axe;
     private float m_nextSpawnTime;
     private float m_spawnAxeCooldown = 2f;
-
 
     private void Start() {
         spawnAxe();

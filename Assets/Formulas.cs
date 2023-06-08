@@ -167,10 +167,10 @@ public class Formulas {
     /// <param name="t_horizontalInitialVelocity"></param>
     /// <param name="t_verticalInitialVelocity"></param>
     /// <returns></returns>
-    public Vector2 tiroParabolico(float t_time, float t_horizontalInitialVelocity, float t_verticalInitialVelocity) {
+    public Vector3 tiroParabolico(float t_time, float t_horizontalInitialVelocity, float t_verticalInitialVelocity, Vector2 t_currentPos) {
         const float gravity = 9.81f;
-        float x = t_horizontalInitialVelocity * t_time;
-        float y = t_verticalInitialVelocity * t_time - 0.5f * gravity * t_time * t_time;
-        return new Vector2(x, y);
+        float x = (t_horizontalInitialVelocity * t_time) * Time.deltaTime;
+        float y = (t_verticalInitialVelocity * t_time - 0.5f * gravity * t_time * t_time) * Time.deltaTime;
+        return new Vector2(x, y) + t_currentPos;
     }
 }
