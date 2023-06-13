@@ -20,7 +20,7 @@ public class EnemyMovement : MonoBehaviour {
 
     void Update() {
         Vector3 direction = m_formulas.direction(transform.position, m_player.position);
-        direction = m_formulas.normalizar(direction);
+        direction = m_formulas.normalize(direction);
         transform.position += direction * (speed * Time.deltaTime);
         coolDown();
     }

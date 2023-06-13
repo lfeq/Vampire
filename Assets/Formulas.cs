@@ -1,21 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using UnityEngine;
 
 public class Formulas {
-    public float magnitud(Vector3 t_v3) {
+    public float magnitude(Vector3 t_v3) {
         float x = t_v3.x * t_v3.x;
         float y = t_v3.y * t_v3.y;
         float z = t_v3.z * t_v3.z;
         float sum = x + y + z;
-        float resultado = Mathf.Sqrt(sum);
-
-        return resultado;
+        float result = Mathf.Sqrt(sum);
+        return result;
     }
 
-    public Vector3 normalizar(Vector3 t_v3) {
-        return t_v3 / magnitud(t_v3);
+    public Vector3 normalize(Vector3 t_v3) {
+        return t_v3 / magnitude(t_v3);
     }
 
     public float pow(float t_x) {
@@ -26,12 +22,12 @@ public class Formulas {
     /// Rotate object x degrees
     /// </summary>
     /// <param name="t_previousPosition"></param>
-    /// <param name="Degrees to be rotated in radians"></param>
+    /// <param name="t_addAngle"></param>
     /// <returns>new position</returns>
     public Vector3 rotate(Vector3 t_previousPosition, float t_addAngle) {
         //x’ = x cos(θ) - y sin(θ)
         //y’ = x sin(θ) + y cos(θ)
-        //Donde X y Y son la posicion original.
+        //Where X and Y are the original position.
         float xPos = (t_previousPosition.x * Mathf.Cos(t_addAngle)) - (t_previousPosition.y * Mathf.Sin(t_addAngle));
         float yPos = (t_previousPosition.x * Mathf.Sin(t_addAngle)) + (t_previousPosition.y * Mathf.Cos(t_addAngle));
         return new Vector3(xPos, yPos, 0);
@@ -41,7 +37,7 @@ public class Formulas {
         float angle = t_q.w * Mathf.Deg2Rad;
         float w = Mathf.Cos(angle / 2);
         Vector3 v = new Vector3(t_q.x, t_q.y, t_q.z);
-        Vector3 vNormal = normalizar(v);
+        Vector3 vNormal = normalize(v);
 
         v.x = vNormal.x * Mathf.Sin(angle / 2);
         v.y = vNormal.y * Mathf.Sin(angle / 2);
@@ -61,9 +57,9 @@ public class Formulas {
         matrix.m21 = 2 * v.y * v.z + 2 * w * v.x;
         matrix.m22 = 1 - 2 * pow(v.x) - 2 * pow(v.y);
 
-        Vector3 resultado = matrix.MultiplyPoint(t_pos);
+        Vector3 result = matrix.MultiplyPoint(t_pos);
 
-        return resultado;
+        return result;
     }
 
     /// <summary>
@@ -77,23 +73,23 @@ public class Formulas {
     /// </example>
     /// </summary>
     /// <returns>The new position of the rotated object</returns>
-    public Vector3 quaternion(Vector3 t_q, float t_angle, Vector3 t_pos, Vector3 t_centro) {
-        Vector3 posicionActualTemp = t_pos;
-        Vector3 centroTemp = t_centro;
-        Vector3 distancia = posicionActualTemp - centroTemp;
+    public Vector3 quaternion(Vector3 t_q, float t_angle, Vector3 t_pos, Vector3 t_center) {
+        Vector3 tempCurrentPos = t_pos;
+        Vector3 tempCenter = t_center;
+        Vector3 distance = tempCurrentPos - tempCenter;
 
-        //Mover al centro
-        centroTemp = Vector3.zero;
-        posicionActualTemp = Vector3.zero + distancia;
+        //Move the point to the center of rotation
+        tempCenter = Vector3.zero;
+        tempCurrentPos = Vector3.zero + distance;
 
-        //Hacer calculos de cuaternion
+        //Calculate the quaternion for the rotation
         float angleInRad = t_angle * Mathf.Deg2Rad;
 
         float w = Mathf.Cos(angleInRad / 2);
 
         Vector3 v = new Vector3(t_q.x, t_q.y, t_q.z);
 
-        Vector3 vNormal = normalizar(v);
+        Vector3 vNormal = normalize(v);
 
         v.x = vNormal.x * Mathf.Sin(angleInRad / 2);
         v.y = vNormal.y * Mathf.Sin(angleInRad / 2);
@@ -113,12 +109,11 @@ public class Formulas {
         matrix.m21 = 2 * v.y * v.z + 2 * w * v.x;
         matrix.m22 = 1 - 2 * pow(v.x) - 2 * pow(v.y);
 
-        //Calcular cuanto se movio
-        Vector3 resultado = matrix.MultiplyPoint(posicionActualTemp);
-        Vector3 movimineto = resultado - posicionActualTemp;
-
-        //Agregar movimiento a la posicion original
-        return t_pos + movimineto;
+        //Multiply the rotation matrix by the current position to get the new position.
+        Vector3 result = matrix.MultiplyPoint(tempCurrentPos);
+        Vector3 movement = result - tempCurrentPos;
+        
+        return t_pos + movement;
     }
 
     public Vector3 move(Vector3 t_pos, Vector3 t_moveVector) {
@@ -128,9 +123,9 @@ public class Formulas {
         matrix.m13 = t_moveVector.y;
         matrix.m23 = t_moveVector.z;
 
-        Vector3 resultado = matrix.MultiplyPoint(t_pos);
+        Vector3 result = matrix.MultiplyPoint(t_pos);
 
-        return resultado;
+        return result;
     }
 
     public float distance(Vector3 t_pos1, Vector3 t_pos2) {
@@ -152,22 +147,23 @@ public class Formulas {
         return force;
     }
 
-    public float aceleration(float t_force, float t_mass) {
+    public float acceleration(float t_force, float t_mass) {
         return t_force / t_mass;
     }
     
     /// <summary>
-    /// vo = velocidad inicial
-    /// t = tiempo
-    /// g = gravedad
+    /// vo = initial velocity
+    /// t = time
+    /// g = gravity
     /// x = vox * t
     /// y = voy * t - 0.5 * g * t^2
     /// </summary>
     /// <param name="t_time"></param>
     /// <param name="t_horizontalInitialVelocity"></param>
     /// <param name="t_verticalInitialVelocity"></param>
+    /// <param name="t_currentPos"></param>
     /// <returns></returns>
-    public Vector3 tiroParabolico(float t_time, float t_horizontalInitialVelocity, float t_verticalInitialVelocity, Vector2 t_currentPos) {
+    public Vector3 parabolicMovement(float t_time, float t_horizontalInitialVelocity, float t_verticalInitialVelocity, Vector2 t_currentPos) {
         const float gravity = 9.81f;
         float x = (t_horizontalInitialVelocity * t_time) * Time.deltaTime;
         float y = (t_verticalInitialVelocity * t_time - 0.5f * gravity * t_time * t_time) * Time.deltaTime;

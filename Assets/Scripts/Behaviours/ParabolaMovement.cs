@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class ParabolaMovement : MonoBehaviour {
     [SerializeField] private float initialVelocity = 10;
-    [SerializeField] private float damage = 15;
+    [SerializeField] private float damage = 30;
     [SerializeField] private float angle = 80f;
 
     private float m_horizontalInitialVelocity;
@@ -23,7 +23,7 @@ public class ParabolaMovement : MonoBehaviour {
 
     private void Update() {
         m_timer += Time.deltaTime;
-        transform.position = m_formulas.tiroParabolico(m_timer, m_horizontalInitialVelocity,
+        transform.position = m_formulas.parabolicMovement(m_timer, m_horizontalInitialVelocity,
             m_verticalInitialVelocity, transform.position);
     }
 

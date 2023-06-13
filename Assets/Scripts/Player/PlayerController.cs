@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public float movementSpeed = 5f;
     public PlayerDirection playerDirection;
 
@@ -11,19 +10,24 @@ public class PlayerController : MonoBehaviour
     private Formulas m_formulas;
 
     // Start is called before the first frame update
-    private void Start()
-    {
+    private void Start() {
         m_formulas = new Formulas();
+#if UNITY_ANDROID
+        dynamicJoystick.gameObject.SetActive(true);
+#endif
     }
 
     // Update is called once per frame
     private void Update() {
-        keyboardMovement();
+#if UNITY_ANDROID
         joystickMovement();
+#else
+        keyboardMovement();
+#endif
     }
 
     public void raisePlayerDead() {
-        playerDead.Raise(); 
+        playerDead.Raise();
     }
 
     private void keyboardMovement() {
@@ -33,7 +37,7 @@ public class PlayerController : MonoBehaviour
         transform.position = m_formulas.move(transform.position, movementVector);
         updatePlayerDirection(xMovement, yMovement);
     }
-    
+
     private void joystickMovement() {
         float xMovement = dynamicJoystick.Horizontal * Time.deltaTime * movementSpeed;
         float yMovement = dynamicJoystick.Vertical * Time.deltaTime * movementSpeed;
@@ -42,8 +46,7 @@ public class PlayerController : MonoBehaviour
         updatePlayerDirection(xMovement, yMovement);
     }
 
-    private void updatePlayerDirection(float t_xMovement, float t_yMovement)
-    {
+    private void updatePlayerDirection(float t_xMovement, float t_yMovement) {
         switch (t_xMovement) {
             case < 0:
                 playerDirection = PlayerDirection.West;
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
                 playerDirection = PlayerDirection.East;
                 break;
         }
+
         switch (t_yMovement) {
             case < 0:
                 playerDirection = PlayerDirection.South;
@@ -63,4 +67,9 @@ public class PlayerController : MonoBehaviour
     }
 }
 
-public enum PlayerDirection { North, South, East, West}
+public enum PlayerDirection {
+    North,
+    South,
+    East,
+    West
+}
