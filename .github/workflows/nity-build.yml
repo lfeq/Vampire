@@ -22,13 +22,13 @@ jobs:
           path: Library
           key: Library-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
 
-      # Setup Unity (updated action name)
+      # Setup Unity
       - name: Setup Unity
         uses: game-ci/unity-builder@v2
         with:
-          unityVersion: 2023.3.23f1  # Use camelCase, not "unity-version"
+          unityVersion: 2023.3.23f1  # Correct casing
 
-      # Build project (updated action name)
+      # Build project
       - name: Build Project
         uses: game-ci/unity-builder@v2
         with:
