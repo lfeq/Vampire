@@ -38,7 +38,7 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildName: MyGame
           buildsPath: Builds
-          unitySerial: ${{ secrets.UNITY_SERIAL }}
+          unitySerial: ${{ secrets.UNITY_LICENSE }}
           unityUsername: ${{ secrets.UNITY_EMAIL }}
           unityPassword: ${{ secrets.UNITY_PASSWORD }}
 
