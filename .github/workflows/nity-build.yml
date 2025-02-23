@@ -1,0 +1,49 @@
+name: Unity Build
+
+on:
+  push:
+    branches: [ "main" ]  # Trigger on pushes to main
+  pull_request: {}         # Optional: Trigger on PRs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Or windows/macos
+
+    steps:
+      # Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true  # Required for Git LFS assets
+
+      # Cache Unity Library to speed up builds
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
+          
+      # Setup Unity
+      - name: Setup Unity
+        uses: game-ci/unity-setup@v2
+        with:
+          unityVersion: 2022.3.20f1  # Match your project's version
+
+      # Activate Unity license
+      - name: Activate License
+        uses: game-ci/unity-request-activation-file@v2
+
+      # Build project
+      - name: Build Project
+        uses: game-ci/unity-builder@v2
+        with:
+          targetPlatform: StandaloneWindows64  # Options: WebGL, iOS, Android, etc.
+          buildName: MyGame
+          buildsPath: Builds
+
+      # Upload build artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: Builds
