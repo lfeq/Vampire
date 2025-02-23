@@ -4,47 +4,48 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_SERIAL }}  # Use GitHub Secrets for Unity license
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code (updated to v4)
+      # Checkout code
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # Cache Unity Library (updated to v4)
+      # Cache Unity Library
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
           path: Library
           key: Library-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
-          
-      # Fix: Use correct setup action name and version
-      - name: Setup Unity
-        uses: game-ci/setup-unity@v1  # <-- Updated action name
-        with:
-          unityVersion: 2021.3.23f1
 
-      # Fix: Use latest activation action (v3)
-      - name: Activate License
-        uses: game-ci/unity-request-activation-file@v4
+      # Setup Unity (latest syntax)
+      - name: Setup Unity
+        uses: game-ci/setup-unity@v3  # <-- Use v3
         with:
-          unityVersion: ${{ steps.setup.outputs.unityVersion }}
-          
-      # Fix: Use latest builder (v3)
+          unityVersion: 2023.3.23f1  # Match your project version
+
+      # Build project with activation (no separate activation step needed)
       - name: Build Project
-        uses: game-ci/unity-builder@v4  # <-- Updated to v3
+        uses: game-ci/unity-builder@v4  # <-- Use v4
         with:
           targetPlatform: StandaloneWindows64
           buildName: MyGame
           buildsPath: Builds
+          # Unity license credentials
+          unitySerial: ${{ secrets.UNITY_SERIAL }}
+          unityUsername: ${{ secrets.UNITY_EMAIL }}
+          unityPassword: ${{ secrets.UNITY_PASSWORD }}
 
-      # Fix: Update upload-artifact to v4
+      # Upload artifacts
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4  # <-- Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: Build
           path: Builds
