@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,9 +24,9 @@ jobs:
 
       # Setup Unity (updated action name)
       - name: Setup Unity
-        uses: game-ci/unity-builder@v2  # <-- Corrected path
+        uses: game-ci/unity-builder@v2
         with:
-          unity-version: 2023.3.23f1  # Match your project version
+          unityVersion: 2023.3.23f1  # Use camelCase, not "unity-version"
 
       # Build project (updated action name)
       - name: Build Project
