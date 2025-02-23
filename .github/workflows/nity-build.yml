@@ -39,7 +39,7 @@ jobs:
           buildName: MyGame
           buildsPath: Builds
           # Unity license credentials
-          unitySerial: ${{ secrets.UNITY_SERIAL }}
+          unitySerial: ${{ secrets.UNITY_LICENSE }}
           unityUsername: ${{ secrets.UNITY_EMAIL }}
           unityPassword: ${{ secrets.UNITY_PASSWORD }}
 
