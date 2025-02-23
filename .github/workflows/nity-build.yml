@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_SERIAL }}  # Use GitHub Secrets for Unity license
+  UNITY_LICENSE: ${{ secrets.UNITY_SERIAL }}
 
 jobs:
   build:
@@ -25,21 +25,20 @@ jobs:
           path: Library
           key: Library-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
 
-      # Setup Unity (latest syntax)
+      # Setup Unity (updated action name)
       - name: Setup Unity
-        uses: game-ci/setup-unity@v3  # <-- Use v3
+        uses: unity-actions/setup-unity@v1  # <-- Corrected path
         with:
-          unityVersion: 2023.3.23f1  # Match your project version
+          unity-version: 2023.3.23f1  # Match your project version
 
-      # Build project with activation (no separate activation step needed)
+      # Build project (updated action name)
       - name: Build Project
-        uses: game-ci/unity-builder@v4  # <-- Use v4
+        uses: unity-actions/unity-builder@v1  # <-- Corrected path
         with:
           targetPlatform: StandaloneWindows64
           buildName: MyGame
           buildsPath: Builds
-          # Unity license credentials
-          unitySerial: ${{ secrets.UNITY_LICENSE }}
+          unitySerial: ${{ secrets.UNITY_SERIAL }}
           unityUsername: ${{ secrets.UNITY_EMAIL }}
           unityPassword: ${{ secrets.UNITY_PASSWORD }}
 
@@ -48,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Build
-          path: Builds
+          path:
