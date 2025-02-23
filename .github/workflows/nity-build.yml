@@ -27,13 +27,13 @@ jobs:
 
       # Setup Unity (updated action name)
       - name: Setup Unity
-        uses: unity-actions/setup-unity@v1  # <-- Corrected path
+        uses: game-ci/unity-builder@v2  # <-- Corrected path
         with:
           unity-version: 2023.3.23f1  # Match your project version
 
       # Build project (updated action name)
       - name: Build Project
-        uses: unity-actions/unity-builder@v1  # <-- Corrected path
+        uses: game-ci/unity-builder@v2
         with:
           targetPlatform: StandaloneWindows64
           buildName: MyGame
