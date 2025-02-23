@@ -30,13 +30,13 @@ jobs:
 
       # Fix: Use latest activation action (v3)
       - name: Activate License
-        uses: game-ci/unity-request-activation-file@v3
+        uses: game-ci/unity-request-activation-file@v4
         with:
           unityVersion: ${{ steps.setup.outputs.unityVersion }}
           
       # Fix: Use latest builder (v3)
       - name: Build Project
-        uses: game-ci/unity-builder@v3  # <-- Updated to v3
+        uses: game-ci/unity-builder@v4  # <-- Updated to v3
         with:
           targetPlatform: StandaloneWindows64
           buildName: MyGame
