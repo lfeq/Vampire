@@ -1,41 +1,41 @@
-name: Update Unity project semantic versioning
+# name: Update Unity project semantic versioning
 
-on: [push, workflow_dispatch]
+# on: [push, workflow_dispatch]
 
-jobs:
-    create:
-        name: Update semver
-        runs-on: ubuntu-latest
-        # Add permissions to allow pushing changes
-        permissions:
-            contents: write
+# jobs:
+#     create:
+#         name: Update semver
+#         runs-on: ubuntu-latest
+#         # Add permissions to allow pushing changes
+#         permissions:
+#             contents: write
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-              with:
-                  # Fetch all history for the repository
-                  fetch-depth: 0
-                  # Persist credentials for the next steps
-                  persist-credentials: true
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v4
+#               with:
+#                   # Fetch all history for the repository
+#                   fetch-depth: 0
+#                   # Persist credentials for the next steps
+#                   persist-credentials: true
 
-            - name: Find ProjectSettings.asset & increment its bundleVersion number
-              uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
-              id: semver-update
-              with:
-                  updateMode: "patch"
-                  projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
+#             - name: Find ProjectSettings.asset & increment its bundleVersion number
+#               uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
+#               id: semver-update
+#               with:
+#                   updateMode: "patch"
+#                   projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
 
-            - name: Get the new semver value
-              run: echo "The new semver number is ${{ steps.semver-update.outputs.semver-string }}"
+#             - name: Get the new semver value
+#               run: echo "The new semver number is ${{ steps.semver-update.outputs.semver-string }}"
 
-            - name: Get the full semver data
-              run: echo "Full semver data is ${{ steps.semver-update.outputs.semver-full-data }}"
+#             - name: Get the full semver data
+#               run: echo "Full semver data is ${{ steps.semver-update.outputs.semver-full-data }}"
 
-            - name: Push changed files back to repo
-              uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                  commit_message: "Updated semver via automated action."
-                  commit_options: "--no-verify --signoff"
+#             - name: Push changed files back to repo
+#               uses: stefanzweifel/git-auto-commit-action@v5
+#               with:
+#                   commit_message: "Updated semver via automated action."
+#                   commit_options: "--no-verify --signoff"
 
                   
