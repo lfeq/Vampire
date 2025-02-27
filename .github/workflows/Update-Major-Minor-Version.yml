@@ -1,0 +1,35 @@
+name: Update Unity project Minor or Major semantic versioning
+
+on: [workflow_dispatch]
+
+jobs:
+  create:
+    name: Update semver
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Increment Major Version
+        uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
+        if: github.event.inputs.update_type == 'major'  # Trigger via workflow_dispatch
+        id: semver-update-major
+        with:
+          updateMode: "major"
+
+      - name: Increment Minor Version
+        uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
+        if: github.event.inputs.update_type == 'minor'  # Trigger via workflow_dispatch
+        id: semver-update-minor
+        with:
+          updateMode: "minor"
+
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Updated semver to ${{ steps.semver-update.outputs.semver-string }}"
