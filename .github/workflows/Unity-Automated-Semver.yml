@@ -27,7 +27,8 @@ jobs:
           projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
 
       - name: Verify New Version
-        run: echo "New version: ${{ steps.semver.outputs.semver-string }}"
+        run: echo "New version: ${{ steps.semver.outputs['semver-string'] }}"
+
 
       - name: Commit and Push Version Change
         uses: stefanzweifel/git-auto-commit-action@v5
