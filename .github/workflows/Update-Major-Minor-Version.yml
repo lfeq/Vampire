@@ -1,10 +1,10 @@
-name: Update Unity project Minor or Major semantic versioning
+name: Update Version and Build
 
-on: [workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
-  create:
-    name: Update semver
+  update_semver:
+    name: Update SemVer and Build
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,21 +15,50 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Increment Major Version
+      # Update the version (e.g., patch)
+      - name: Update Unity SemVer
         uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
-        if: github.event.inputs.update_type == 'major'  # Trigger via workflow_dispatch
-        id: semver-update-major
+        id: semver-update
         with:
-          updateMode: "major"
+          updateMode: "patch"
+          projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
 
-      - name: Increment Minor Version
-        uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
-        if: github.event.inputs.update_type == 'minor'  # Trigger via workflow_dispatch
-        id: semver-update-minor
+      # Build the project for all platforms (sequential steps, no matrix)
+      - name: Build for macOS
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          updateMode: "minor"
+          targetPlatform: StandaloneOSX
 
-      - name: Push changes
+      - name: Build for Windows
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: StandaloneWindows64
+
+      # Add more platforms as needed...
+
+      # Commit and push the version change AFTER building
+      - name: Push version change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Updated semver to ${{ steps.semver-update.outputs.semver-string }}"
+          commit_message: "Updated semver to ${{ steps.semver-update.outputs.semver-string }} [skip ci]"
+          file_pattern: ProjectSettings/ProjectSettings.asset  # Only commit the version file
+          commit_options: "--no-verify --signoff"
+
+      # Upload artifacts
+      - name: Upload macOS Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-macOS
+          path: build/StandaloneOSX
+
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Windows
+          path: build/StandaloneWindows64
