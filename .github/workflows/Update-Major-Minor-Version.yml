@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   update_semver:
-    name: Update SemVer and Build
+    name: Update Version
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      # Update the version (e.g., patch)
       - name: Update Unity SemVer
         uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
         id: semver-update
@@ -23,42 +22,52 @@ jobs:
           updateMode: "patch"
           projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
 
-      # Build the project for all platforms (sequential steps, no matrix)
-      - name: Build for macOS
-        uses: game-ci/unity-builder@v4
+      - name: Commit and Push Version Change
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Updated semver to ${{ steps.semver-update.outputs.semver-string }} [skip ci]"
+          file_pattern: ProjectSettings/ProjectSettings.asset
+          commit_options: "--no-verify --signoff"
+
+  build:
+    name: Build Project
+    needs: update_semver  # Wait for the version update job
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX
+          - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - iOS
+          - Android
+          - WebGL
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+
+      - if: matrix.targetPlatform == 'Android'
+        uses: jlumbroso/free-disk-space@v1.3.1
+
+      - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneOSX
+          targetPlatform: ${{ matrix.targetPlatform }}
 
-      - name: Build for Windows
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      - uses: actions/upload-artifact@v4
         with:
-          targetPlatform: StandaloneWindows64
-
-      # Add more platforms as needed...
-
-      # Commit and push the version change AFTER building
-      - name: Push version change
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Updated semver to ${{ steps.semver-update.outputs.semver-string }} [skip ci]"
-          file_pattern: ProjectSettings/ProjectSettings.asset  # Only commit the version file
-          commit_options: "--no-verify --signoff"
-
-      # Upload artifacts
-      - name: Upload macOS Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-macOS
-          path: build/StandaloneOSX
-
-      - name: Upload Windows Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-Windows
-          path: build/StandaloneWindows64
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
