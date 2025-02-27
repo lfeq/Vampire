@@ -1,36 +1,36 @@
-name: Update Unity project semantic versioning
+name: Update Unity Version on Merge
 
-on: [push, workflow_dispatch]
+on:
+  pull_request:
+    types: [push]
+    branches:
+      - development
 
 jobs:
-    create:
-        name: Update semver
-        runs-on: ubuntu-latest
+  bump-version:
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          # Important: disable credential persistence so your custom token settings are used
+          persist-credentials: false
 
-        steps:
-            # You must ALWAYS checkout your repo so that actions in the workflow can use it.
-            - name: Checkout
-              uses: actions/checkout@v4
+      - name: Bump Version using Unity Automated Semver
+        uses: AlexStormwood/UnityAutomatedSemver@v2.0.0
+        id: semver
+        with:
+          updateMode: "patch"  # Or "major" or "minor" as needed
+          projectSettingsPath: "ProjectSettings/ProjectSettings.asset"
 
-            - name: Find ProjectSettings.asset & increment its bundleVersion number
-              uses: AlexStormwood/UnityAutomatedSemver@v2.0.0 # Change v1.1.1 to whatever tag is newer in the AlexStormwood/UnityAutomatedSemver repository.
-              id: semver-update
-              with:
-                  updateMode: "patch" # Change this string to any suitable string mentioned in the Inputs section of this action's readme to suit your needs.
-                  projectSettingsPath: "ProjectSettings/ProjectSettings.asset" # optional: specify the exact location of the ProjectSettings file, otherwise action will attempt to automatically find it.
+      - name: Verify New Version
+        run: echo "New version: ${{ steps.semver.outputs.semver-string }}"
 
-            # Validate that the number has been incremented correctly.
-            - name: Get the new semver value
-              run: echo "The new semver number for this Unity project is ${{ steps.semver-update.outputs.semver-string }}"
-
-            - name: Get the full semver data from the action
-              run: echo "Full semver data is ${{ steps.semver-update.outputs.semver-full-data }}"
-
-            # Commit & push the updated semver number back into the repo. Yes, you have to fetch & pull in your local workstation after this step is done.
-            - name: Push changed files back to repo
-              uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                  commit_message: "Updated semver via automated action."
-                  commit_options: "--no-verify --signoff"
-
-                  
+      - name: Commit and Push Version Change
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update version to ${{ steps.semver.outputs.semver-string }} [skip ci]"
+          commit_options: "--no-verify --signoff"
